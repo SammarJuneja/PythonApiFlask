@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 from dotenv import load_dotenv
 
 app = Flask(__name__)
