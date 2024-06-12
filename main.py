@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
@@ -17,7 +17,12 @@ def root():
 @app.post("/create-user")
 def createUser():
    data = request.json
-   db.insert_one(data)
+   if not data or "username" not in data:
+      return jsonify({ "error": "Userame is missing" }), 404
+   elif username in request.form:
+      username = data["username"]
+      db.insert_one(data)
+      return jsonify({ "message": f"Your bank account is created with username {username}"})
     
 if __name__ == "__main__":
   app.run(debug=True)
