@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
@@ -11,12 +11,13 @@ client = MongoClient(MONGO)
 db = client["BankApi"]
 
 @app.get("/")
-def route():
+def root():
     return "<h1>This is the Bank api made with python </h1>"
     
-@app.get("/test/<user>")
-def test(user):
-    return f"<h2>{user}</h2>"
+@app.post("/create-user")
+def createUser():
+   data = request.json
+   db.insert_one(data)
     
 if __name__ == "__main__":
   app.run(debug=True)
