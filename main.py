@@ -8,7 +8,7 @@ load_dotenv()
 
 MONGO = os.getenv("MONGO_URI")
 client = MongoClient(MONGO)
-db = client.get_database()
+db = client["BankApi"]
 
 @app.get("/")
 def route():
