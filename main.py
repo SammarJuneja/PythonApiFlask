@@ -16,13 +16,15 @@ def root():
     
 @app.post("/create-user")
 def createUser():
-   data = request.json
-   if not data or "username" not in data:
-      return jsonify({ "error": "Userame is missing" }), 404
-   elif username in request.form:
-      username = data["username"]
-      db.insert_one(data)
-      return jsonify({ "message": f"Your bank account is created with username {username}"})
+   data = {
+      "hello": "insert test"
+   }
+   # if not data or "username" not in data:
+   #    return jsonify({ "error": "Userame is missing" }), 404
+   # elif username in request.form:
+   #    username = data["username"]
+   db.users.insert_one(data)
+   return jsonify({ "message": f"Your bank account is created with username {data}" })
     
 if __name__ == "__main__":
   app.run(debug=True)
