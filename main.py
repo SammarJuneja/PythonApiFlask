@@ -47,16 +47,16 @@ def createUser():
    if passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
       
-      try:
-         db.users.insert_one({
-           username: username,
-           email: email,
-           password: password
-         })
-         return jsonify({ "message": f"Your bank account is created with username {username}"})
-         
-      except OperationFailure as e:
-         return jsonify({ "message": f"Failed to create account {e}"})
+   try:
+     db.users.insert_one({
+       "username": username,
+       "email": email,
+       "password": password
+     })
+     return jsonify({ "message": f"Your bank account is created with username {username}"})
+     
+   except OperationFailure as e:
+     return jsonify({ "message": f"Failed to create account {e}"})
     
 if __name__ == "__main__":
   app.run(debug=True)
