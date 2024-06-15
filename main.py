@@ -33,18 +33,18 @@ def createUser():
       
       email = data["email"]
       
-   if not "email" in data:
+   if "email" not in data:
       return jsonify({ "error": "Email is missing" }), 404
       
-   if emailRegex.match(email):
+   if not emailRegex.match(email):
       return jsonify({ "error": "Please enter a valid email" })
       
       password = data["password"]
       
-   elif not "password" in data:
+   if "password" not in data:
       return jsonify({ "error": "Password is missing" }), 404
    
-   if passwordRegex.match(password):
+   if not passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
       
    try:
