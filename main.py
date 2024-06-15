@@ -19,28 +19,42 @@ def root():
 @app.post("/create-user")
 def createUser():
    data = request.get_json()
-   username = data["username"]
-   email = data["email"]
-   password = data["password"]
 
-   emailRegex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
-   passwordRegex = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+   emailRegex = re.compile(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$')
+   passwordRegex = re.compile(r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
+   
+   if not data:
+     return jsonify({ "error": "No data was provided" })
+     
+     username = data["username"]
 
-   if not data or "username" not in data:
+   if "username" not in data:
       return jsonify({ "error": "Userame is missing" }), 404
-   elif not data or "email" not in data:
+      
+      email = data["email"]
+      
+   if not "email" in data:
       return jsonify({ "error": "Email is missing" }), 404
-   elif not data or "password" not in data:
+      
+   if emailRegex.match(email):
+      return jsonify({ "error": "Please enter a valid email" })
+      
+      password = data["password"]
+      
+   elif not "password" in data:
       return jsonify({ "error": "Password is missing" }), 404
    
-   if re.match(passwordRegex, password):
+   if passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
-   elif re.match(emailRegex, email):
-      return jsonify({ "error": "Please enter a valid email" })
-   else:
+      
       try:
-         db.users.insert_one({ username: username, email: email, password: password })
+         db.users.insert_one({
+           username: username,
+           email: email,
+           password: password
+         })
          return jsonify({ "message": f"Your bank account is created with username {username}"})
+         
       except OperationFailure as e:
          return jsonify({ "message": f"Failed to create account {e}"})
     
