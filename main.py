@@ -68,7 +68,7 @@ def createAccount():
    except OperationFailure as e:
      return jsonify({ "message": f"Failed to create account {e}"})
    
-@app.get("/login")
+@app.post("/login")
 def login():
    data = request.get_json()
    passwordRegex = re.compile(r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
