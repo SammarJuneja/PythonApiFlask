@@ -63,7 +63,7 @@ def createAccount():
        "email": email,
        "password": hashedPass
      })
-     return jsonify({ "message": f"Your bank account is created with username {username}"})
+     return jsonify({ "message": f"Your bank account is created with username {username}"}), 200
      
    except OperationFailure as e:
      return jsonify({ "message": f"Failed to create account {e}"})
