@@ -93,7 +93,6 @@ def login():
    print(userExist)
    passw = userExist["password"]
 
-
    if not userExist:
       return jsonify({ "error": "User not found" }), 404
    
