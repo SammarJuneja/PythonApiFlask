@@ -68,7 +68,7 @@ def createAccount():
    except OperationFailure as e:
      return jsonify({ "message": f"Failed to create account {e}"})
    
-@app.get("/login")
+@app.post("/login")
 def login():
    data = request.get_json()
    passwordRegex = re.compile(r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
@@ -81,7 +81,6 @@ def login():
    if "username" not in data:
       return jsonify({ "error": "Userame is missing" }), 404
    
-   
    password = data["password"]
       
    if "password" not in data:
@@ -90,13 +89,16 @@ def login():
    if not passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
    
-   userExist = db.users.find_one({ username: username })
+   userExist = db.users.find_one({ "username": username })
+   print(userExist)
+   passw = userExist["password"]
+
 
    if not userExist:
       return jsonify({ "error": "User not found" }), 404
    
    byte = password.encode("utf-8")
-   decodedPass = bcrypt.checkpw(byte, userExist["password"])
+   decodedPass = bcrypt.checkpw(byte, passw)
 
    if not decodedPass:
       return jsonify({ "error": "You entered wrong password" }), 404
