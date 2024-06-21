@@ -104,5 +104,14 @@ def login():
    
    return jsonify({ "token": "work in process"})
 
+@app.get("/balance/<id>")
+def balance(id):
+   user = db.users.find_one({ "_id": id })
+   if not user:
+      return jsonify({ "error": "User was not found" }), 404
+   else:
+      return jsonify({ "user": user })
+
+
 if __name__ == "__main__":
   app.run(debug=True)
