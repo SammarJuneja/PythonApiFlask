@@ -1,10 +1,12 @@
+from codecs import oem_encode
 import os
 import re
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from pymongo.errors import OperationFailure
 import bcrypt
-#import pyjwt
+import jwt
+import datetime
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -97,12 +99,16 @@ def login():
       return jsonify({ "error": "User not found" }), 404
    
    byte = password.encode("utf-8")
-   decodedPass = bcrypt.checkpw(byte, passw)
+   decodedPass = bcrypt.checkpw(byte, password)
 
    if not decodedPass:
       return jsonify({ "error": "You entered wrong password" }), 404
    
-   return jsonify({ "token": "work in process"})
+   secret = "afgddyydwi26910fhisolapwohdhw8fhkp"
+   token = jwt.encode({
+      "username": username
+   }, secret, algorithm="HS256")
+   return jsonify({ "token": token })
 
 @app.get("/balance/<id>")
 def balance(id):
