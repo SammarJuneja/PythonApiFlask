@@ -13,6 +13,7 @@ app = Flask(__name__)
 load_dotenv()
 
 MONGO = os.getenv("MONGO_URI")
+JWT_SECRET = os.getenv("SECRET_KEY")
 client = MongoClient(MONGO)
 db = client["BankApi"]
 
@@ -104,11 +105,10 @@ def login():
    if not decodedPass:
       return jsonify({ "error": "You entered wrong password" }), 404
    
-   secret = "afgddyydwi26910fhisolapwohdhw8fhkp"
    token = jwt.encode({
       "username": username
-   }, secret, algorithm="HS256")
-   return jsonify({ "token": token })
+   }, JWT_SECRET, algorithm="HS256")
+   return jsonify({ "token": token, "success": "You login successfully" })
 
 @app.get("/balance/<id>")
 def balance(id):
