@@ -1,20 +1,14 @@
 import os
 import re
 from flask import Blueprint, request, jsonify
-from pymongo import MongoClient
+from mongo import db
 from pymongo.errors import OperationFailure
+from config import JWT_SECRET
 import bcrypt
 import jwt
 import datetime
-from dotenv import load_dotenv
 
 auth = Blueprint("auth", __name__)
-load_dotenv()
-
-MONGO = os.getenv("MONGO_URI")
-JWT_SECRET = os.getenv("SECRET_KEY")
-client = MongoClient(MONGO)
-db = client["BankApi"]
 
 @auth.post("/create-account")
 def createAccount():
