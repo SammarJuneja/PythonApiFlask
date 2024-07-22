@@ -3,12 +3,14 @@ import re
 from flask import Blueprint, request, jsonify
 from mongo import db
 from pymongo.errors import OperationFailure
-from config import JWT_SECRET
+import config from config
 import bcrypt
 import jwt
 import datetime
 
 auth = Blueprint("auth", __name__)
+
+JWT_SECRET = config["JWT_SECRET"]
 
 @auth.post("/create-account")
 def createAccount():
