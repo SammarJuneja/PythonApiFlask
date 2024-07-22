@@ -1,17 +1,10 @@
 import os
 from flask import Flask, request, jsonify
-from pymongo import MongoClient
-from dotenv import load_dotenv
 from routes.auth import auth
+from mongo import db
 
 app = Flask(__name__)
 app.register_blueprint(auth, url_prefix="/auth")
-load_dotenv()
-
-MONGO = os.getenv("MONGO_URI")
-JWT_SECRET = os.getenv("SECRET_KEY")
-client = MongoClient(MONGO)
-db = client["BankApi"]
 
 @app.get("/")
 def root():
