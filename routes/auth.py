@@ -3,7 +3,7 @@ import re
 from flask import Blueprint, request, jsonify
 from mongo import db
 from pymongo.errors import OperationFailure
-import config from config
+from config import config
 import bcrypt
 import jwt
 import datetime
