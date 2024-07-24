@@ -56,7 +56,7 @@ def createAccount():
      db.users.insert_one({
        "username": username,
        "email": email,
-       "password": hashedPass
+       "password": hashedPass.decode("utf-8")
      })
      return jsonify({ "message": f"Your bank account is created with username {username}"}), 200
    except OperationFailure as e:
@@ -85,13 +85,13 @@ def login():
    
    userExist = db.users.find_one({ "username": username })
    print(userExist)
-   passw = userExist["password"]
+   storedPassword = userExist["password"].encode("utf-8")
 
    if not userExist:
       return jsonify({ "error": "User not found" }), 404
    
    byte = password.encode("utf-8")
-   decodedPass = bcrypt.checkpw(byte, password)
+   decodedPass = bcrypt.checkpw(byte, storedPassword)
 
    if not decodedPass:
       return jsonify({ "error": "You entered wrong password" })

@@ -1,5 +1,4 @@
-import os
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from routes.auth import auth
 from mongo import db
 
