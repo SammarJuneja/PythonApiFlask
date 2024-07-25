@@ -1,4 +1,3 @@
-import os
 import re
 from flask import Blueprint, request, jsonify
 from mongo import db
