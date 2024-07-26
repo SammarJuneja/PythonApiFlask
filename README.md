@@ -18,9 +18,8 @@ This is a personal practice project for creating a bank API using Flask and Mong
 - JWT (JsonWebToken)
 
   
-# Clone the repository:
+## Clone the repository:
 
 ```sh
 git clone https://github.com/SammarJuneja/PythonApiFlask.git
-cd bank-api
 ```
