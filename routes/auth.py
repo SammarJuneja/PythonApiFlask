@@ -83,14 +83,13 @@ def login():
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
    
    userExist = db.users.find_one({ "username": username })
-   print(userExist)
    storedPassword = userExist["password"].encode("utf-8")
 
    if not userExist:
       return jsonify({ "error": "User not found" }), 404
    
-   byte = password.encode("utf-8")
-   decodedPass = bcrypt.checkpw(byte, storedPassword)
+   bytePass = password.encode("utf-8")
+   decodedPass = bcrypt.checkpw(bytePass, storedPassword)
 
    if not decodedPass:
       return jsonify({ "error": "You entered wrong password" })
