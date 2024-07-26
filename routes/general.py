@@ -7,7 +7,7 @@ general = Blueprint("general", __name__)
 
 @general.get("/user/<id>")
 def user(id):
-   user = db.users.find_one({ "_id": id })
+   user = db.users.find_one({ "_id": ObjectId(id) })
    if not id:
       return jsonify({ "error": "Id was not provided" }), 404
    elif not user:
@@ -17,7 +17,7 @@ def user(id):
    
 @general.get("/balance/<id>")
 def balance(id):
-   user = db.users.find_one({ "_id": id })
+   user = db.users.find_one({ "_id": ObjectId(id) })
    if not user:
       return jsonify({ "error": "User was not found" }), 404
    else:
