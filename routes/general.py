@@ -21,7 +21,6 @@ def balance(id):
    if not user:
       return jsonify({ "error": "User was not found" }), 404
    else:
-<<<<<<< HEAD
       return jsonify({ "balance": user["balance"] })
    
 @general.post("/sendmoney")
@@ -54,6 +53,3 @@ def send():
             }
       )
       return jsonify({ "success": f"Successfully sent money to {username}" }), 200
-=======
-      return jsonify({ "user": user })
->>>>>>> 826670b65e97c548a5cff3e965c5914ad7370258
