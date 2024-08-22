@@ -20,11 +20,22 @@ def createAccount():
    
    if not data:
      return jsonify({ "error": "No data was provided" })
-     
-   username = data["username"]
-
+   
    if "username" not in data:
       return jsonify({ "error": "Userame is missing" }), 404
+     
+   username = data["username"].replace(" ", "")
+   
+   if len(username) > 20 or len(username) < 3:
+      return jsonify({ "error": "Username must contain atleast 3 characters and max 20 characters" }), 401
+   
+   userExist = db.users.find_one({ "username": username })
+   
+   if userExist:
+      return jsonify({ "error": "Username is already taken" }), 500
+   
+   if "email" not in data:
+      return jsonify({ "error": "Email is missing" }), 404
       
    email = data["email"]
 
@@ -33,16 +44,13 @@ def createAccount():
    if emailExist:
       return jsonify({ "error": "User with provided email already exists" }), 500
       
-   if "email" not in data:
-      return jsonify({ "error": "Email is missing" }), 404
-      
    if not emailRegex.match(email):
       return jsonify({ "error": "Please enter a valid email" })
       
-   password = data["password"]
-      
    if "password" not in data:
       return jsonify({ "error": "Password is missing" }), 404
+   
+   password = data["password"]
    
    if not passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
@@ -68,16 +76,16 @@ def login():
    
    if not data:
      return jsonify({ "error": "No data was provided" })
-   
-   username = data["username"]
 
    if "username" not in data:
       return jsonify({ "error": "Userame is missing" }), 404
    
-   password = data["password"]
+   username = data["username"]
       
    if "password" not in data:
       return jsonify({ "error": "Password is missing" }), 404
+   
+   password = data["password"]
    
    if not passwordRegex.match(password):
       return jsonify({ "error": "Password must atleast be 8 characters long and should contain One uppercase ltter and a symbol" })
@@ -97,4 +105,4 @@ def login():
    token = jwt.encode({
       "username": username
    }, JWT_SECRET, algorithm="HS256")
-   return jsonify({ "token": token, "success": "You login successfully" })
+   return jsonify({ "token": token, "success": "You logged in successfully" })
