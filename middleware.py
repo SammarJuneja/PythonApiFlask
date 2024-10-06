@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 def jwtMiddleware(f):
     @wraps(f)
-    def main(*args, **kwargs):
+    def main(username=None, *args, **kwargs):
         token = None
         if ("Authorization") in request.headers:
             token = request.headers["Authorization"]
@@ -18,9 +18,10 @@ def jwtMiddleware(f):
         try:
             data = jwt.decode(token, config["JWT_SECRET"], algorithms=["HS256"])
             currentUser = data["username"]
+            userId = str(data["userId"])
         except:
             return jsonify({ "error": "Token is invalid" })
         
-        return f(currentUser, *args, **kwargs)
+        return f(username, currentUser, userId, *args, **kwargs)
     
     return main

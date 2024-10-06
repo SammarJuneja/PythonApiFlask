@@ -63,7 +63,9 @@ def createAccount():
      db.users.insert_one({
        "username": username,
        "email": email,
-       "password": hashedPass.decode("utf-8")
+       "password": hashedPass.decode("utf-8"),
+       "balance": 1000,
+       "createdAt": datetime.datetime.now()
      })
      return jsonify({ "message": f"Your bank account is created with username {username}"}), 200
    except OperationFailure as e:
@@ -103,6 +105,7 @@ def login():
       return jsonify({ "error": "You entered wrong password" })
    
    token = jwt.encode({
-      "username": username
+      "username": username,
+      "userId": str(userExist["_id"]),
    }, JWT_SECRET, algorithm="HS256")
    return jsonify({ "token": token, "success": "You logged in successfully" })
